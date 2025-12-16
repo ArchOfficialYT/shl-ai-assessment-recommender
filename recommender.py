@@ -3,13 +3,10 @@ from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import re
 
-# Load dataset
 df = pd.read_excel("Gen_AI Dataset.xlsx")
 
-# Load model
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
-# Precompute embeddings
 dataset_embeddings = model.encode(df["Query"].tolist())
 
 def extract_assessment_name(url: str) -> str:
@@ -28,8 +25,6 @@ def recommend(query, top_k=5):
 
     results = df.iloc[top_indices].copy()
 
-    # Create clean assessment name
     results["Assessment Name"] = results["Assessment_url"].apply(extract_assessment_name)
 
-    # Return only what UI needs
     return results[["Assessment Name", "Assessment_url"]]
