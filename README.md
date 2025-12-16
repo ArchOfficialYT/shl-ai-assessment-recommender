@@ -14,7 +14,8 @@ product pages.
 
 ## 📸 App Demo
 
-![SHL AI Assessment Recommender Demo](Assessment_Recommender_Screenshot.png)
+![SHL AI Assessment Recommender Demo](assets/Assessment_Recommender_Screenshot.png)
+
 
 ---
 
