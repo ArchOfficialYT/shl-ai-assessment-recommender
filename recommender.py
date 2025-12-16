@@ -1,27 +1,35 @@
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+import re
 
+# Load dataset
 df = pd.read_excel("Gen_AI Dataset.xlsx")
 
+# Load model
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
+# Precompute embeddings
 dataset_embeddings = model.encode(df["Query"].tolist())
 
+def extract_assessment_name(url: str) -> str:
+    """
+    Convert SHL URL into a readable assessment name
+    """
+    slug = url.rstrip("/").split("/")[-1]
+    name = slug.replace("-", " ").title()
+    name = re.sub(r"\b(New|View)\b", "", name).strip()
+    return name
+
 def recommend(query, top_k=5):
-
     query_embedding = model.encode([query])
-
     similarities = cosine_similarity(query_embedding, dataset_embeddings)[0]
-
     top_indices = similarities.argsort()[-top_k:][::-1]
 
-    results = df.iloc[top_indices]
-    return results
+    results = df.iloc[top_indices].copy()
 
-if __name__ == "__main__":
-    test_query = "I want to hire a Java developer with teamwork skills"
-    results = recommend(test_query)
+    # Create clean assessment name
+    results["Assessment Name"] = results["Assessment_url"].apply(extract_assessment_name)
 
-    print("Recommendations:")
-    print(results)
+    # Return only what UI needs
+    return results[["Assessment Name", "Assessment_url"]]
