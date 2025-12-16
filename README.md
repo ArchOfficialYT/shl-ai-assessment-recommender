@@ -12,11 +12,6 @@ product pages.
 ## 🚀 Live Demo
 👉 https://huggingface.co/spaces/ArchOfficialYT/shl-ai-assessment-recommender
 
-## 📸 App Demo
-
-![SHL AI Assessment Recommender Demo](Assessment_Recommender_Screenshot.png)
-
-
 ---
 
 ## 📌 Features
